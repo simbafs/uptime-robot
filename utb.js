@@ -15,10 +15,10 @@ let channel = [];
  *	@param {Array} broadcastPool - the pool contains channel object
  *	@param {Array} broadcastPoolID - the pool contains channel id
  */
-function restoreChannel(broadcastPool, broadcastPoolID){
-	broadcastPool.length = 0;
-	for(let id of broadcastPoolID){
-		broadcastPool.push(simply.client.channels.get(id));
+function restoreChannel(channel, channelID){
+	channel.length = 0;
+	for(let id of channelID){
+		channel.push(simply.client.channels.get(id));
 	}
 }
 
@@ -34,13 +34,17 @@ function isUrl(target){
 
 simply.login(process.env.DC_ROT_TOKEN);
 
+simply.on('ready', () => {
+	restoreChannel(channel, channelID);
+})
+
 simply.set('prefix', '!');
 simply.cmd('utb', (msg, arg) => {
 	switch(arg[1]){
 		case 'ping':
 			msg.channel.send('pong');
 			break;
-		case 'add':
+		case 'addUrl':
 			if(arg.length < 3){
 				msg.channel.send('Warning! You must pass a url');
 			}else if(url.includes(arg[2])){
@@ -51,7 +55,7 @@ simply.cmd('utb', (msg, arg) => {
 				setTimeout(() => db.set('url', url), 100);
 			}
 			break;
-		case 'remove':
+		case 'removeUrl':
 			if(arg.length < 3){
 				msg.channel.send('Warning! You must pass a url');
 			}else if(url.includes(arg[2])){
@@ -60,9 +64,42 @@ simply.cmd('utb', (msg, arg) => {
 				setTimeout(() => db.set('url', url), 100);
 			}
 			break;
+		case 'add': 
+			if(!channelID.includes(msg.channel.id)){
+				msg.channel.send(`Add channel ${msg.channel.id}`);
+				channel.push(msg.channel);
+				channelID.push(msg.channel.id);
+				setTimeout(() => db.set('channel', channelID), 100);
+			}else{
+				msg.channel.send('This channel has added');
+			}
+			break;
+		case 'remove':
+			if(channelID.includes(msg.channel.id)){
+				msg.channel.send(`Remove channel ${msg.channel.id}`);
+				channel = channel.filter(i => i.id !== msg.channel.id);
+				channelID = channelID.filter(i => i !== msg.channel.id);
+				console.log(channel);
+				console.log(channelID);
+				setTimeout(() => db.set('channel', channelID), 100);
+			}else{
+				msg.channel.send('This channel isn\'t in the list');
+			}
+			break;
 		case 'help':
 		default:
 			msg.channel.send(helpMsg);
 
 	}
 })
+
+/**
+ *	broadcast msg to all channels
+ *	@function
+ *	@param {String} msg - message to send to the channel
+ */
+function broadcast(msg){
+	channel.forEach(i => i.send(msg));
+}
+
+module.exports = broadcast;

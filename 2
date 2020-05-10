@@ -5,15 +5,15 @@ const CancelToken = axios.CancelToken;
 const JSONdb = require('simple-json-db');
 const db = new JSONdb(process.env.db || './db.json');
 
+const url = 'https://oj.ckcsc.net';
 function ping(url){
 	const source = CancelToken.source();
-	setTimeout(() => source.cancel(url), parseInt(process.env.timeout) || 2000);
+	setTimeout(() => source.cancel(url), process.env.timeout || 1000);
 	return axios.head(url, {cancelToken: source.token})
 		.then(({status, statusText}) => ({url, status, statusText}));
 }
 
 function saveRecod(e){
-	console.log('saveRecod', e.url);
 	return new Promise((res, rej) => {
 		let timestamp = (new Date()).toISOString();
 		e.timestamp = timestamp;
@@ -35,14 +35,16 @@ function timeout(k){
 	//		at listOnTimeout (internal/timers.js:518:9)
 	//		at processTimers (internal/timers.js:492:7)
 	//		at async Promise.all (index 2)
-	let url = k.message;
-	console.log('timeout', url);
+	try{
+		console.log(k.config);
+		url = k.config.url;
+	}catch(e){}
 	return new Promise((res, rej) => {
 		let timestamp = (new Date()).toISOString();
 		let e = {
 			url: url,
 			status: 408,
-			statusText: 'Request Timeout test',
+			statusText: 'Request Timeout',
 			timestamp
 		}
 
@@ -55,7 +57,7 @@ function timeout(k){
 }
 
 function pingAndSave(url){
-	return ping(url).then(saveRecod).catch(timeout);
+	return ping(url).then(saveRecod, timeout);
 }
 
 module.exports = {
