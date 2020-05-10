@@ -1,19 +1,13 @@
 require('dotenv').config();
+require('./utb.js');
 
-const simply = require('simply.js');
-const helpMsg = require('./helpMsg.js');
+const ping = require('./ping.js').pingAndSave;
+const cron = require('node-cron');
+const JSONdb = require('simple-json-db');
+const db = new JSONdb(process.env.db || './db.json');
 
-simply.login(process.env.DC_ROT_TOKEN);
+function pingAll(){
+	db.get('url').forEach(i => ping(i).then(console.log, () => console.error('Error')));
+};
 
-simply.set('prefix', '!');
-simply.cmd('utb', (msg, arg) => {
-	switch(arg[1]){
-		case 'ping':
-			msg.channel.send('pong');
-			break;
-		case 'help':
-		default:
-			msg.channel.send(helpMsg);
-
-	}
-})
+// cron.schedule('0 */5 * * * *', pingAll);	
