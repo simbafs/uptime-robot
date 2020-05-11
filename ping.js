@@ -9,7 +9,8 @@ function ping(url){
 	const source = CancelToken.source();
 	setTimeout(() => source.cancel(url), parseInt(process.env.timeout) || 2000);
 	return axios.head(url, {cancelToken: source.token})
-		.then(({status, statusText}) => ({url, status, statusText}));
+		.then(({status, statusText}) => new Promise((res, rej) => res({url, status, statusText})));
+	//	.then(({status, statusText}) => ({url, status, statusText}));
 }
 
 function saveRecod(e){
@@ -27,15 +28,7 @@ function saveRecod(e){
 }
 
 function timeout(k){
-	// I don't know why node throw an error here, but it actually work.
-	//
-	//	error TypeError: Cannot read property 'method' of undefined
-	//		at timeout (/home/simba/git/uptime-robot/ping.js:30:25)
-	//		at runNextTicks (internal/process/task_queues.js:62:5)
-	//		at listOnTimeout (internal/timers.js:518:9)
-	//		at processTimers (internal/timers.js:492:7)
-	//		at async Promise.all (index 2)
-	let url = k.message;
+	let url = Object.entries(k)[5][1].url;
 	console.log('timeout', url);
 	return new Promise((res, rej) => {
 		let timestamp = (new Date()).toISOString();

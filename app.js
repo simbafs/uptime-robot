@@ -15,7 +15,9 @@ function pingAll(){
 	// setTimeout(() => console.log(tasks), 3000);
 	return Promise.all(tasks)
 		.then(e => {
-			let msg = '```\nUptime Robot!!\n';
+			let msg = '```\n' 
+					+ 'Uptime Robot!!\n'
+					+ (new Date).toLocaleString('zh-Hant', { timeZone: 'Asia/Taipei'}) + '\n';
 			let flag = false;
 			e.forEach(i => {
 				let lastStatus = (db.get(i.url) || []).slice().pop();
@@ -31,13 +33,16 @@ function pingAll(){
 					}else{
 						msg += `${i.url} is down\n`;
 					}
+					flag = true;
 				}
 			})
 			msg += '```\n';
-			if(flag) broadcast(msg);
+			if(flag){
+				broadcast(msg);
+			}
 		})
 		.catch((e) => console.error('error', e));
 };
 
-setTimeout(() => pingAll(), 3000);
-// cron.schedule('0 */1 * * * *', pingAll);	
+// setTimeout(() => pingAll(), 5000);
+cron.schedule('0 */1 * * * *', pingAll);	
