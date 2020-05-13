@@ -3,7 +3,7 @@ require('dotenv').config();
 const simply = require('simply.js');
 const helpMsg = require('./helpMsg.js');
 const JSONdb = require('simple-json-db');
-const db = new JSONdb('./db.json');
+const db = new JSONdb(process.env.db || './db.json');
 
 let url = db.get('url') || [];
 let channelID = db.get('channel') || [];

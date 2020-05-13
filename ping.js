@@ -28,7 +28,7 @@ function saveRecod(e){
 }
 
 function timeout(k){
-	console.log(k);
+	// console.log(Object.entries(k));
 	let url = Object.entries(k)[5][1].url;
 	console.log('timeout', url);
 	return new Promise((res, rej) => {
