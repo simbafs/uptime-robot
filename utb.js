@@ -45,53 +45,63 @@ simply.cmd('utb', (msg, arg) => {
 			msg.channel.send('pong');
 			break;
 		case 'addUrl':
-			if(arg.length < 3){
-				msg.channel.send('Warning! You must pass a url');
-			}else if(url.includes(arg[2])){
-				msg.channel.send('Url has added to the list');
-			}else{
-				url.push(arg[2]);
-				msg.channel.send(`Add ${arg[2]} to the list`);
-				setTimeout(() => db.set('url', url), 100);
-			}
+			(() => {
+				if(arg.length < 3){
+					msg.channel.send('Warning! You must pass a url');
+				}else if(url.includes(arg[2])){
+					msg.channel.send('Url has added to the list');
+				}else{
+					url.push(arg[2]);
+					msg.channel.send(`Add ${arg[2]} to the list`);
+					setTimeout(() => db.set('url', url), 100);
+				}
+			})();
 			break;
 		case 'removeUrl':
-			if(arg.length < 3){
-				msg.channel.send('Warning! You must pass a url');
-			}else if(url.includes(arg[2])){
-				url = url.filter(i => i !== arg[2]);
-				msg.channel.send(`Remove ${arg[2]} from the list`);
-				setTimeout(() => db.set('url', url), 100);
-			}
+			(() => {
+				if(arg.length < 3){
+					msg.channel.send('Warning! You must pass a url');
+				}else if(url.includes(arg[2])){
+					url = url.filter(i => i !== arg[2]);
+					msg.channel.send(`Remove ${arg[2]} from the list`);
+					setTimeout(() => db.set('url', url), 100);
+				}
+			})();
 			break;
 		case 'listUrl':
-			url = '```\n'
-				+ 'Uptime Robot\n';
-			db.get('url').slice().forEach(i => url = url.concat(`${i}\n`));
-			url = url.concat('```\n');
-			msg.channel.send(url);
+			(() => {
+				url = '```\n'
+					+ 'Uptime Robot\n';
+				db.get('url').slice().forEach(i => url = url.concat(`${i}\n`));
+				url = url.concat('```\n');
+				msg.channel.send(url);
+			})();
 			break;
 		case 'add': 
-			if(!channelID.includes(msg.channel.id)){
-				msg.channel.send(`Add channel ${msg.channel.id}`);
-				channel.push(msg.channel);
-				channelID.push(msg.channel.id);
-				setTimeout(() => db.set('channel', channelID), 100);
-			}else{
-				msg.channel.send('This channel has added');
-			}
+			(() => {
+				if(!channelID.includes(msg.channel.id)){
+					msg.channel.send(`Add channel ${msg.channel.id}`);
+					channel.push(msg.channel);
+					channelID.push(msg.channel.id);
+					setTimeout(() => db.set('channel', channelID), 100);
+				}else{
+					msg.channel.send('This channel has added');
+				}
+			})();
 			break;
 		case 'remove':
-			if(channelID.includes(msg.channel.id)){
-				msg.channel.send(`Remove channel ${msg.channel.id}`);
-				channel = channel.filter(i => i.id !== msg.channel.id);
-				channelID = channelID.filter(i => i !== msg.channel.id);
-				console.log(channel);
-				console.log(channelID);
-				setTimeout(() => db.set('channel', channelID), 100);
-			}else{
-				msg.channel.send('This channel isn\'t in the list');
-			}
+			(() => {
+				if(channelID.includes(msg.channel.id)){
+					msg.channel.send(`Remove channel ${msg.channel.id}`);
+					channel = channel.filter(i => i.id !== msg.channel.id);
+					channelID = channelID.filter(i => i !== msg.channel.id);
+					console.log(channel);
+					console.log(channelID);
+					setTimeout(() => db.set('channel', channelID), 100);
+				}else{
+					msg.channel.send('This channel isn\'t in the list');
+				}
+			})();
 			break;
 		case 'help':
 		default:

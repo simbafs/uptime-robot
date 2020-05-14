@@ -8,11 +8,10 @@ const db = new JSONdb(process.env.db || './db.json');
 
 function pingAll(){
 	let tasks = [];
-	let url = db.get('url');
-	url.forEach(i => tasks.push(ping(i)));
+	db.get('url').forEach(i => tasks.push(ping(i)));
 	console.log('ping');
-	//	console.log(tasks);
-	// setTimeout(() => console.log(tasks), 3000);
+	// console.log(tasks);
+	// setTimeout(() => console.log(tasks), 10000);
 	return Promise.all(tasks)
 		.then(e => {
 			let msg = '```\n' 
@@ -20,10 +19,11 @@ function pingAll(){
 					+ (new Date).toLocaleString('zh-Hant', { timeZone: 'Asia/Taipei'}) + '\n';
 			let flag = false;
 			e.forEach(i => {
-				let lastStatus = (db.get(i.url) || []).slice().pop();
-				console.group(i.url);
-				console.log(lastStatus.status);
-				console.log(i.status);
+				let lastStatus = (db.get(i.url) || []).slice().reverse()[0];
+				console.group(db.get(i.url));
+				console.log(lastStatus);
+				console.log(i);
+				console.log(db.get('url').length);
 				console.groupEnd();
 				if(!lastStatus || lastStatus.status !== i.status){
 					if(i.status == 200){
