@@ -64,6 +64,13 @@ simply.cmd('utb', (msg, arg) => {
 				setTimeout(() => db.set('url', url), 100);
 			}
 			break;
+		case 'listUrl':
+			url = '```\n'
+				+ 'Uptime Robot\n';
+			db.get('url').slice().forEach(i => url = url.concat(`${i}\n`));
+			url = url.concat('```\n');
+			msg.channel.send(url);
+			break;
 		case 'add': 
 			if(!channelID.includes(msg.channel.id)){
 				msg.channel.send(`Add channel ${msg.channel.id}`);
