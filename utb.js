@@ -53,7 +53,9 @@ simply.cmd('utb', (msg, arg) => {
 				}else{
 					url.push(arg[2]);
 					msg.channel.send(`Add ${arg[2]} to the list`);
-					setTimeout(() => db.set('url', url), 100);
+					setTimeout(() => {
+						db.set('url', url)
+						console.log('saved'):
 				}
 			})();
 			break;
