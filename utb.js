@@ -69,6 +69,7 @@ simply.cmd('utb', (msg, arg) => {
 					msg.channel.send(`Remove ${arg[2]} from the list`);
 					setTimeout(() => db.set('url', url), 100);
 				}
+				db.sync();
 			})();
 			break;
 		case 'listUrl':

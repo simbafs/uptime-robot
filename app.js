@@ -18,8 +18,16 @@ function pingAll(){
 					+ 'Uptime Robot!!\n'
 					+ (new Date).toLocaleString('zh-Hant', { timeZone: 'Asia/Taipei'}) + '\n';
 			let flag = false;
+			let status = db.get('status');
+			// console.log('status', status);
+			// ensure status is exist;
+			if(!Array.isArray(status)){
+				db.set('status', []);
+				status = [];
+			}
 			e.forEach(i => {
-				let lastStatus = (db.get(i.url) || []).slice().reverse()[0];
+				let lastStatus = status[i.url];
+				// 	console.log('lastStatus', i.url, lastStatus);
 				/*
 				console.group(db.get(i.url));
 				console.log(lastStatus);
@@ -27,15 +35,18 @@ function pingAll(){
 				console.log(db.get('url').length);
 				console.groupEnd();
 				*/
-				if(!lastStatus || lastStatus.status !== i.status){
+				if(!lastStatus || lastStatus !== i.status){
 					if(i.status == 200){
 						msg += `${i.url} is back\n`;
 					}else{
 						msg += `${i.url} is down\n`;
 					}
+					status[i.url] = i.status;
 					flag = true;
 				}
-			})
+			});
+			// db doesn't write actually
+			db.set('status', status);
 			msg += '```\n';
 			if(flag){
 				broadcast(msg);
