@@ -56,6 +56,7 @@ simply.cmd('utb', (msg, arg) => {
 					setTimeout(() => {
 						db.set('url', url);
 						console.log('saved');
+					}, 100);
 				}
 			})();
 			break;
