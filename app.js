@@ -20,11 +20,13 @@ function pingAll(){
 			let flag = false;
 			e.forEach(i => {
 				let lastStatus = (db.get(i.url) || []).slice().reverse()[0];
+				/*
 				console.group(db.get(i.url));
 				console.log(lastStatus);
 				console.log(i);
 				console.log(db.get('url').length);
 				console.groupEnd();
+				*/
 				if(!lastStatus || lastStatus.status !== i.status){
 					if(i.status == 200){
 						msg += `${i.url} is back\n`;
