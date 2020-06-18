@@ -14,6 +14,8 @@ function pingAll(){
 	// setTimeout(() => console.log(tasks), 10000);
 	return Promise.all(tasks)
 		.then(e => {
+			let mention = db.get('mention');
+			console.log(mention);
 			let msg = '```\n' 
 					+ 'Uptime Robot!!\n'
 					+ (new Date).toLocaleString('zh-Hant', { timeZone: 'Asia/Taipei'}) + '\n';
@@ -55,5 +57,5 @@ function pingAll(){
 		.catch((e) => console.error('error', e));
 };
 
-// setTimeout(() => pingAll(), 5000);
+// setTimeout(pingAll, 5000);
 cron.schedule('0 */1 * * * *', pingAll);	

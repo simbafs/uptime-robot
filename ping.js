@@ -13,8 +13,8 @@ function ping(url){
 	//	.then(({status, statusText}) => ({url, status, statusText}));
 }
 
-function saveRecod(e){
-	console.log('saveRecod', e.url);
+function saveRecord(e){
+	console.log('saveRecord', e.url);
 	return new Promise((res, rej) => {
 		let timestamp = (new Date()).toISOString();
 		e.timestamp = timestamp;
@@ -22,7 +22,7 @@ function saveRecod(e){
 		let record = db.get(e.url) || [];
 		record.push(e);
 		
-		db.set(e.url, record);
+		timeout(() => db.set(e.url, record), 100);
 		res(e);
 	})
 }
@@ -49,11 +49,11 @@ function timeout(k){
 }
 
 function pingAndSave(url){
-	return ping(url).then(saveRecod).catch(timeout);
+	return ping(url).then(saveRecord).catch(timeout);
 }
 
 module.exports = {
 	pingAndSave,
-	saveRecod,
+	saveRecord,
 	ping
 }

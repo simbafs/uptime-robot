@@ -8,6 +8,7 @@ const db = new JSONdb(process.env.db || './db.json');
 let url = db.get('url') || [];
 let channelID = db.get('channel') || [];
 let channel = [];
+let mentionID = db.get('mention') || [];
 
 /**
  *	get channel object when the bot restart
@@ -106,6 +107,34 @@ simply.cmd('utb', (msg, arg) => {
 				}else{
 					msg.channel.send('This channel isn\'t in the list');
 				}
+			})();
+			break;
+		case 'mention':
+			(() => {
+				let add = msg.mentions.users;
+				add.forEach(i => {
+					if(!(mentionID.includes(i.id))) mentionID.push(i.id);
+				});
+				setTimeout(() => db.set('mention', mentionID), 100);
+				console.log(mentionID);
+			})();
+			break;
+		case 'unmention':
+			(() => {
+				let user = arg.slice(2);
+				console.log(user);
+				mentionID = mentionID.filter(i => !(user.includes(`<@!${i}>`)));
+				console.log(mentionID);
+				setTimeout(() => db.set('mention', mentionID), 100);
+			})();	
+			break;
+		case 'listMention':
+			(() => {
+				console.log(mentionID);
+				let list = 'Mention List\n';
+				mentionID.forEach(i => list = list + `<@${i}>\n`);
+				list += '\n';
+				msg.channel.send(list);
 			})();
 			break;
 		case 'help':
