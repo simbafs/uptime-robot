@@ -1,2 +1,2 @@
 # uptime-robot
-check the status of websites and report on Discord
+Check the status of websites and then report it on Discord
