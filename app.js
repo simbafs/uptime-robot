@@ -1,16 +1,17 @@
 require('dotenv').config();
 
 const broadcast = require('./utb.js');
-const ping = require('./ping.js').pingAndSave;
+const ping = require('./ping.js');
 const cron = require('node-cron');
 const JSONdb = require('simple-json-db');
 const db = new JSONdb(process.env.db || './db.json');
 
 function pingAll(){
 	let tasks = [];
-	db.get('url').forEach(i => tasks.push(ping(i)));
+	(db.get('url') || []).forEach(i => tasks.push(ping(i)));
 	console.log('ping');
-	// console.log(tasks);
+	// console.log('tasks', tasks);
+	// console.log('db', db.get('url'));
 	// setTimeout(() => console.log(tasks), 10000);
 	return Promise.all(tasks)
 		.then(e => {
@@ -19,10 +20,10 @@ function pingAll(){
 					+ (new Date).toLocaleString('zh-Hant', { timeZone: 'Asia/Taipei'}) + '\n';
 			let flag = false;
 			let status = db.get('status');
-			// console.log('status', status);
+			console.log('status', status);
 			// ensure status is exist;
 			if(!Array.isArray(status)){
-				db.set('status', []);
+				setImmediate(() => db.set('status', []));
 				status = [];
 			}
 			e.forEach(i => {
@@ -46,7 +47,7 @@ function pingAll(){
 				}
 			});
 			// db doesn't write actually
-			db.set('status', status);
+			setImmediate(() => db.set('status', status));
 			msg += '```\n';
 			if(flag){
 				broadcast(msg);
