@@ -7,6 +7,7 @@ let helpMsg = '```\n'
 			+ '\tremove ........... remove this channel from the boardcast list\n'
 			+ '\taddUrl <url>...... add this url to the monitor list\n'
 			+ '\tremoveUrl <url> .. remove this url from monitor list\n'
+			+ '\tlistUrl .......... list all url in list\n'
 			+ '```'
 
 module.exports = helpMsg;
