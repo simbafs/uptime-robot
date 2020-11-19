@@ -23,7 +23,7 @@ function pingAll(){
 			console.log('status', status);
 			// ensure status is exist;
 			if(!Array.isArray(status)){
-				setImmediate(() => db.set('status', []));
+				setTimeout(() => db.set('status', []), 100);
 				status = [];
 			}
 			e.forEach(i => {
@@ -47,7 +47,7 @@ function pingAll(){
 				}
 			});
 			// db doesn't write actually
-			setImmediate(() => db.set('status', status));
+			setTimeout(() => db.set('status', status), 100);
 			msg += '```\n';
 			if(flag){
 				broadcast(msg);

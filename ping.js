@@ -14,7 +14,8 @@ function ping(url){
 
 			let record = db.get(e.url) || [];
 			record.push(e);
-			db.set(e.url, record);
+			console.log('url', e.url);
+			setTimeout(() => db.set(e.url, record), 100);
 			return e;
 		});
 }
