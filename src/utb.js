@@ -85,7 +85,7 @@ simply.cmd('utb', (msg, arg) => {
 				msg.channel.send(allUrl.join('\n'));
 			})();
 			break;
-		case 'add':
+		case 'addChannel':
 			(() => {
 				if(!channelID.includes(msg.channel.id).value()){
 					msg.channel.send(`Add channel ${msg.channel.id}`);
@@ -96,7 +96,7 @@ simply.cmd('utb', (msg, arg) => {
 				}
 			})();
 			break;
-		case 'remove':
+		case 'removeChannel':
 			(() => {
 				if(channelID.includes(msg.channel.id).value()){
 					msg.channel.send(`Remove channel ${msg.channel.id}`);
