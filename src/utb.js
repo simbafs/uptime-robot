@@ -85,7 +85,7 @@ simply.cmd('utb', (msg, arg) => {
 				msg.channel.send(allUrl.join('\n'));
 			})();
 			break;
-		case 'add': 
+		case 'add':
 			(() => {
 				if(!channelID.includes(msg.channel.id).value()){
 					msg.channel.send(`Add channel ${msg.channel.id}`);

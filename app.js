@@ -35,7 +35,7 @@ function pingAll(){
 					}else{
 						msg += `${i.url} is down\n`;
 					}
-					status.set(i.url, i.status).write();
+					status.set([i.url], i.status).write();
 					flag = true;
 				}
 			});

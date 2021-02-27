@@ -19,7 +19,7 @@ function ping(url){
 			if(!db.get('record').has(e.url).value()){
 				db
 					.get('record')
-					.set(e.url, [e])
+					.set([e.url], [e])
 					.write();
 			}else{
 				db
