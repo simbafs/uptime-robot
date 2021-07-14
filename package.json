@@ -20,6 +20,7 @@
 	"homepage": "https://github.com/simba-fs/uptime-robot#readme",
 	"dependencies": {
 		"axios": "^0.21.1",
+		"config": "^3.3.6",
 		"dotenv": "^8.2.0",
 		"lowdb": "^1.0.0",
 		"node-cron": "^2.0.3",

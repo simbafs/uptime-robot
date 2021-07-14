@@ -1,5 +1,4 @@
-require('dotenv').config();
-
+const config = require('config');
 const simply = require('simply.js');
 const helpMsg = require('./helpMsg.js');
 
@@ -8,7 +7,7 @@ const Adapter = require('lowdb/adapters/FileSync');
 const db = lowdb(new Adapter('db.json'));
 
 let url = db.get('url');
-let channelID = db.get('channel');
+let channelID = db.get('channel').value();
 let channel = [];
 
 /**
@@ -19,7 +18,9 @@ let channel = [];
  */
 function restoreChannel(channel, channelID){
 	channel.length = 0;
+	console.log('init channel', channelID);
 	channelID.forEach(id => {
+		console.log('restore channel', id);
 		channel.push(simply.client.channels.get(id));
 	});
 }
@@ -34,18 +35,14 @@ function isUrl(target){
 	return (parsedUrl.protocol && parsedUrl.slashes && parsedUrl.host);
 }
 
-/**
- *	replace '.' to _
- */
-
-simply.login(process.env.DC_ROT_TOKEN);
+simply.login(config.get('token'));
 
 simply.on('ready', () => {
 	restoreChannel(channel, channelID);
 })
 
 simply.set('prefix', '!');
-simply.set('activity', `stay at ${process.env.at || 'known'}`);
+simply.set('activity', `stay at ${config.get('at')}`);
 
 simply.cmd('utb', (msg, arg) => {
 	switch(arg[1]){
@@ -120,6 +117,7 @@ simply.cmd('utb', (msg, arg) => {
  *	@param {String} msg - message to send to the channel
  */
 function broadcast(msg){
+	console.log('channel', channel.length)
 	channel.forEach(i => i.send(msg));
 }
 

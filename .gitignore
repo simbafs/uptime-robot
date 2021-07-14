@@ -105,3 +105,4 @@ dist
 
 *.swp
 db.json
+config/local.js
