@@ -7,7 +7,7 @@ const Adapter = require('lowdb/adapters/FileSync');
 const db = lowdb(new Adapter('db.json'));
 
 let url = db.get('url');
-let channelID = db.get('channel').value();
+let channelID = db.get('channel').value() || [];
 let channel = [];
 
 /**
@@ -84,7 +84,7 @@ simply.cmd('utb', (msg, arg) => {
 			break;
 		case 'addChannel':
 			(() => {
-				if(!channelID.includes(msg.channel.id).value()){
+				if(!channelID.includes(msg.channel.id)){
 					msg.channel.send(`Add channel ${msg.channel.id}`);
 					channel.push(msg.channel);
 					channelID.push(msg.channel.id).write();
@@ -95,7 +95,7 @@ simply.cmd('utb', (msg, arg) => {
 			break;
 		case 'removeChannel':
 			(() => {
-				if(channelID.includes(msg.channel.id).value()){
+				if(channelID.includes(msg.channel.id)){
 					msg.channel.send(`Remove channel ${msg.channel.id}`);
 					channel = channel.filter(i => i.id !== msg.channel.id);
 					channelID.remove(i => i === msg.channel.id).write();

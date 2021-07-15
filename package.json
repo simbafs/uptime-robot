@@ -1,32 +1,26 @@
 {
 	"name": "uptime-robot",
 	"version": "1.0.0",
-	"description": "Check the status of websites and report on Discord ",
-	"main": "app.js",
+	"description": "Check the status of websites and then report it on Discord",
+	"main": "index.js",
+	"dependencies": {
+		"axios": "^0.21.1",
+		"config": "^3.3.6",
+		"discord.js": "^12.5.3",
+		"slash-commands": "^1.4.0"
+	},
+	"devDependencies": {},
 	"scripts": {
-		"start": "node app.js",
-		"dev": "nodemon --ignore db.json start",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/simba-fs/uptime-robot.git"
 	},
-	"author": "Simba-Fs",
+	"author": "simba-fs",
 	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/simba-fs/uptime-robot/issues"
 	},
-	"homepage": "https://github.com/simba-fs/uptime-robot#readme",
-	"dependencies": {
-		"axios": "^0.21.1",
-		"config": "^3.3.6",
-		"dotenv": "^8.2.0",
-		"lowdb": "^1.0.0",
-		"node-cron": "^2.0.3",
-		"simply.js": "^1.3.4"
-	},
-	"devDependencies": {
-		"nodemon": "^2.0.3"
-	}
+	"homepage": "https://github.com/simba-fs/uptime-robot#readme"
 }

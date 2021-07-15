@@ -1,5 +1,6 @@
 module.exports = {
 	token: '',
-	timeout: 10 * 1000,
-	at: 'unknown'
+	appID: '',
+	publicKey: '',
+	timeout: 3 * 1000
 }

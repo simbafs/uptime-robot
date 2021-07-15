@@ -1,36 +1,18 @@
 const config = require('config');
 const axios = require('axios').create({ timeout: parseInt(config.get('timeout')) });
 
-const lowdb = require('lowdb');
-const Adapter = require('lowdb/adapters/FileSync');
-const db = lowdb(new Adapter('db.json'));
-
-function ping(url){
+const axios = Axios
+async function ping(url){
 	return axios.head(url)
 		.then(({status, statusText}) => ({url, status, statusText}), e => {
-			// console.error(e);
-			return {url, status: 503, statusText: 'Server is unavailible'};
+			return {url, status: e?.response?.status || 500, statusText: e?.response?.statusText || 'Internal Server Error'};
 		})
-		.then(e => {
-			// console.log(e);
-			e.timestamp = (new Date()).toISOString();
-
-			if(!db.get('record').has(e.url).value()){
-				db
-					.get('record')
-					.set([e.url], [e])
-					.write();
-			}else{
-				db
-					.get('record')
-					.get(e.url)
-					.push(e)
-					.write();
-			}
-			return e;
-		});
+		.then(e => ({
+				...e,
+				timestamp: (new Date()).toISOString()
+		}));
 }
 
-ping.db = db;
+// ping('http://localhost:3000/noreply').then(console.log)
 
 module.exports = ping;
