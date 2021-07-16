@@ -39,13 +39,18 @@ const subCmdListen = (cmd, send, interaction) => {
 }
 
 const subCmdRemove = (cmd, send, interaction) => {
-	const args = getArgs(cmd);
-	send(`
-\`\`\`json
-${JSON.stringify(cmd, null, 2)}
-\`\`\`
-	`);
-	console.log('remove sub-command', args);
+	try{
+		const args = getArgs(cmd);
+		let { url, channel } = args;
+
+		if(!channel) channel = interaction.channel_id;
+
+		let c = db.get(['channel', channel])
+			.remove(i => console.log(i, url, i === url) || i === url)
+			.write();
+		send(`removed ${url}`);
+
+	}catch(e){console.log('error', e)}
 }
 
 const subCmdList = (cmd, send, interaction) => {
