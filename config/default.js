@@ -3,5 +3,6 @@ module.exports = {
 	appID: '',
 	publicKey: '',
 	guildID: '',
-	timeout: 3 * 1000
+	timeout: 3 * 1000,
+	at: ''
 }

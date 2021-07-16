@@ -20,6 +20,7 @@ client.login(config.get('token'));
 
 client.on('ready', () => {
 	debug('Discord bot logined');
+	client.user.setActivity(config.get('at'))
 	client.ws.on('INTERACTION_CREATE', i => parse(i, client));
 });
 
