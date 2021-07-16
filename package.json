@@ -14,6 +14,7 @@
 	},
 	"devDependencies": {},
 	"scripts": {
+		"start": "DEBUG=utb:* node src/bot.js",
 		"dev": "DEBUG=utb:* nodemon --ignore db.json src/bot.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
