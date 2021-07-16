@@ -1,3 +1,4 @@
+const debug = require('debug')('utb:ping.js');
 const config = require('config');
 const axios = require('axios').create({ timeout: parseInt(config.get('timeout')) });
 
@@ -13,6 +14,6 @@ async function ping(url){
 		}));
 }
 
-// ping('http://localhost:3000/noreply').then(console.log)
+// ping('http://localhost:3000/noreply').then(debug)
 
 module.exports = ping;

@@ -1,3 +1,4 @@
+const debug = require('debug')('utb:bot.js');
 const config = require('config');
 const Discord = require('discord.js');
 const parse = require('./parseCmd');
@@ -18,7 +19,7 @@ const client = new Discord.Client();
 client.login(config.get('token'));
 
 client.on('ready', () => {
-	console.log('logined!');
+	debug('Discord bot logined');
 	client.ws.on('INTERACTION_CREATE', i => parse(i, client));
 });
 

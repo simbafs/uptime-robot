@@ -6,12 +6,14 @@
 	"dependencies": {
 		"axios": "^0.21.1",
 		"config": "^3.3.6",
+		"debug": "^4.3.2",
 		"discord.js": "^12.5.3",
 		"lowdb": "^1.0.0",
 		"slash-commands": "^1.4.0"
 	},
 	"devDependencies": {},
 	"scripts": {
+		"dev": "DEBUG=utb:* nodemon --ignore db.json src/bot.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"repository": {

@@ -1,3 +1,4 @@
+const debug = require('debug')('utb:parseCmd.js');
 const Discord = require('discord.js');
 const { join } = require('path');
 const low = require('lowdb');
@@ -34,7 +35,7 @@ const subCmdListen = (cmd, send, interaction) => {
 		}
 	}catch(e){
 		send('Error occurred');
-		console.error(e);
+		debug(e);
 	}
 }
 
@@ -46,11 +47,14 @@ const subCmdRemove = (cmd, send, interaction) => {
 		if(!channel) channel = interaction.channel_id;
 
 		let c = db.get(['channel', channel])
-			.remove(i => console.log(i, url, i === url) || i === url)
+			.remove(i => i === url)
 			.write();
 		send(`removed ${url}`);
 
-	}catch(e){console.log('error', e)}
+	}catch(e){
+		send('Error occurred');
+		debug('error', e)
+	}
 }
 
 const subCmdList = (cmd, send, interaction) => {
@@ -66,6 +70,14 @@ const subCmdList = (cmd, send, interaction) => {
 ${JSON.stringify(c, null, 2)}\`\`\``);
 }
 
+const logCmd = (interaction) => {
+	const user = interaction?.member?.user?.username;
+	const cmd = interaction.data;
+	const subCmd = cmd.options[0].name;
+	const args = Object.entries(getArgs(cmd)).map(i => `${i[0]}: ${i[1]}`).join(' ');
+	debug(`${user} execute "/${cmd?.name} ${subCmd} ${args}"`);
+}
+
 const cmds = {
 	listen: subCmdListen,
 	remove: subCmdRemove,
@@ -75,7 +87,7 @@ const cmds = {
 function Parse(interaction, client){
 	let flag = false
 	const send = (content) => {
-		console.log('send', flag, content);
+		debug('send', flag, content);
 		if(flag) return;
 		client.api.interactions(interaction.id, interaction.token)
 			.callback.post({
@@ -88,8 +100,8 @@ function Parse(interaction, client){
 	};
 	const cmd = interaction.data;
 	const subCmd = cmd.options[0].name;
+	logCmd(interaction);
 	if(cmds[subCmd]){
-		console.log('exec', cmds[subCmd]);
 		cmds[subCmd](cmd, send, interaction);
 	}else{
 		send(`\`\`\`json

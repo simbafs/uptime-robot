@@ -1,3 +1,4 @@
+const debug = require('debug')('utb:registerCmd.js');
 const config = require('config');
 const {
 	DiscordInteractions,
@@ -13,13 +14,13 @@ const interaction = new DiscordInteractions({
 
 // delete command
 // const delCmd = ['865065460683505685', '865110899685720065', '865112530368069652'];
-// delCmd.forEach(i => interaction.deleteApplicationCommand(i, null).then(console.log, console.error));
+// delCmd.forEach(i => interaction.deleteApplicationCommand(i, null).then(debug, debug));
 
 // list commands
 interaction
 	.getApplicationCommands()
-	.then(console.log)
-	.catch(console.error);
+	.then(debug)
+	.catch(debug);
 
 // const cmdPing = {
 //     name: "ping",
@@ -93,5 +94,5 @@ const cmdServer = {
 
 interaction
 	.createApplicationCommand(cmdServer, config.get('guildID'))
-	.then(console.log)
-	.catch(console.error);
+	.then(debug)
+	.catch(debug);
