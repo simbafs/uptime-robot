@@ -51,6 +51,19 @@ const subCmdRemove = (cmd, send, interaction) => {
 			.write();
 		send(`removed ${url}`);
 
+		// clear
+		if(db.get(['channel', channel]).value().length === 0){
+			debug('clear channel listening list');
+			let channels = db.get('channel').value();
+			let newChannels = {};
+			for(let i in channels){
+				if(channels[i].length > 0){
+					newChannels[i] = channels[i];
+				}
+			}
+			db.set('channel', newChannels).write();
+		}
+
 	}catch(e){
 		send('Error occurred');
 		debug('error', e)
@@ -85,6 +98,7 @@ const cmds = {
 }
 
 function Parse(interaction, client){
+	debug(interaction.channel_id);
 	let flag = false
 	const send = (content) => {
 		debug('send', flag, content);

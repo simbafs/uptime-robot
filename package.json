@@ -9,6 +9,7 @@
 		"debug": "^4.3.2",
 		"discord.js": "^12.5.3",
 		"lowdb": "^1.0.0",
+		"node-cron": "^3.0.0",
 		"slash-commands": "^1.4.0"
 	},
 	"devDependencies": {},

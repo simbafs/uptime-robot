@@ -2,7 +2,6 @@ const debug = require('debug')('utb:ping.js');
 const config = require('config');
 const axios = require('axios').create({ timeout: parseInt(config.get('timeout')) });
 
-const axios = Axios
 async function ping(url){
 	return axios.head(url)
 		.then(({status, statusText}) => ({url, status, statusText}), e => {
