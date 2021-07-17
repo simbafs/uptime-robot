@@ -1,8 +1,6 @@
 const debug = require('debug')('utb:bot.js');
 const config = require('config');
 const Discord = require('discord.js');
-const parse = require('./parseCmd');
-const cron = require('./cron');
 const { join } = require('path');
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
@@ -13,7 +11,10 @@ db.defaults({
 	channel: {},
 	record: {},
 	lastStatus: {}
-}).write()
+}).write();
+
+const parse = require('./parseCmd')(db);
+const cron = require('./cron')(db);
 
 const client = new Discord.Client();
 
